@@ -57,6 +57,7 @@ import datetime
 import re
 import subprocess
 import sys
+import traceback
 
 # The different folder options, new options need code in FindSnooze()
 FOLDERS = ['Snooze.Until Friday 18:00',
@@ -263,4 +264,5 @@ for user in args.users:
         mail.SetSnooze()
         mail.CheckRelease()
     except:
+      traceback.print_exc()
       Error('unexpected Error!')
