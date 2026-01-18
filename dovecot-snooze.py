@@ -101,7 +101,7 @@ class Mail(object):
 
     Debug('moving %s back to inbox!' % self.uid)
     cmd = [args.doveadm, 'flags', 'remove', '-u', user,
-           '\Seen MoveAt%s' % timestamp, 'mailbox', self.folder, 'uid',
+           '\\Seen MoveAt%s' % timestamp, 'mailbox', self.folder, 'uid',
            self.uid]
     if 0 != subprocess.call(cmd):
       Error('flags remove before move failed!')
