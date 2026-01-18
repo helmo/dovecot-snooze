@@ -58,9 +58,13 @@ import re
 import subprocess
 import sys
 
-
+# The different folder options, new options need code in FindSnooze()
 FOLDERS = ['Snooze.Until Friday 18:00',
            'Snooze.Until Monday 7:00',
+           'Snooze.Until Tuesday 7:00',
+           'Snooze.Until Wednesday 7:00',
+           'Snooze.Until Thursday 7:00',
+           'Snooze.Until Friday 7:00',
            'Snooze.Until 7:00',
            'Snooze.Until 18:00',
            'Snooze.For 1 Hour']
@@ -148,28 +152,50 @@ class Mail(object):
     Debug('now is %d' % UnixTime(now))
     today = now.replace(hour=0, minute=0, second=0, microsecond=0)
     day_of_week = today.weekday()
-    if self.folder == FOLDERS[4]:
+    if self.folder == 'Snooze.For 1 Hour':
       snooze_until = now + datetime.timedelta(hours=1)
-    elif self.folder == FOLDERS[3]:
+    elif self.folder == 'Snooze.Until 18:00':
       snooze_until = today + datetime.timedelta(hours=18)
       if snooze_until < now:
         snooze_until += datetime.timedelta(days=1)
-    elif self.folder == FOLDERS[2]:
+    elif self.folder == 'Snooze.Until 7:00':
       snooze_until = today + datetime.timedelta(hours=7)
       if snooze_until < now:
         snooze_until += datetime.timedelta(days=1)
-    elif self.folder == FOLDERS[1]:
+    elif self.folder == 'Snooze.Until Monday 7:00':
       snooze_days = 7 - day_of_week
       if snooze_days == 0:
         snooze_days = 7
       snooze_until = today + datetime.timedelta(days=snooze_days, hours=7)
-    elif self.folder == FOLDERS[0]:
+    elif self.folder == 'Snooze.Until Tuesday 7:00':
+      snooze_days = 7 - day_of_week + 1
+      if snooze_days == 0:
+        snooze_days = 7
+      snooze_until = today + datetime.timedelta(days=snooze_days, hours=7)
+    elif self.folder == 'Snooze.Until Wednesday 7:00':
+      snooze_days = 7 - day_of_week + 2
+      if snooze_days == 0:
+        snooze_days = 7
+      snooze_until = today + datetime.timedelta(days=snooze_days, hours=7)
+    elif self.folder == 'Snooze.Until Thursday 7:00':
+      snooze_days = 7 - day_of_week + 3
+      if snooze_days == 0:
+        snooze_days = 7
+      snooze_until = today + datetime.timedelta(days=snooze_days, hours=7)
+    elif self.folder == 'Snooze.Until Friday 7:00':
+      snooze_days = 7 - day_of_week + 4
+      if snooze_days == 0:
+        snooze_days = 7
+      snooze_until = today + datetime.timedelta(days=snooze_days, hours=7)
+    elif self.folder == 'Snooze.Until Friday 18:00':
       snooze_days = 4 - day_of_week
       if snooze_days < 1:
         snooze_days += 7
       snooze_until = today + datetime.timedelta(days=snooze_days, hours=18)
     else:
+      Debug('Folder not recognized in FindSnooze code.')
       return None
+
     unix_time = UnixTime(snooze_until)
     Debug('snoozing %s until %s, this is at %d' % (self.uid, snooze_until,
                                                    unix_time))
